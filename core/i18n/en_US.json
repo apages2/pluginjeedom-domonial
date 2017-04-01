@@ -1,0 +1,32 @@
+{
+    "plugins\/domonial\/core\/php\/jeedomonial.php": {
+        "Evènement : ": "Event : ",
+        "Clef API non valide, vous n\'êtes pas autorisé à effectuer cette action (jeeZwave)":"Invalid API key, you are not allowed to do this action (jeeZwave)"
+    },
+    "plugins\/domonial\/core\/class\/domonial.class.php": {
+        "Lancement du démon Domonial": "Launching of Domonial deamon",
+        "Démon Domonial lancé": "Domonial deamon launched",
+        "Impossible de lancer le démon Domonial": "Not possible to launch Domonial deamon"
+    },
+    "plugins\/domonial\/desktop\/php\/domonial.php": {
+        "Liste équipements Domonial": "List of Domonial devices",
+        "Nom de l'équipement Domonial": "Name of Domonial< device",
+        "ID": "ID",
+        "Equipement": "Device",
+        "Ajouter une commande": "Add command",
+        "Logical ID (info) ou Commande brute (action)": "Logical ID (info) or Raw command (action)",
+        "Paramètres": "Parameters",
+    },
+    "plugins\/domonial\/desktop\/js\/domonial.js": {
+        "Le démon a été correctement arrêté : il se relancera automatiquement dans 1 minute": "The deamon have been correctly stopped : it will be automatically relaunched in 1 minute",
+        "La valeur de la commande vaut par defaut la commande": "The command value is the command by default",
+        "Aucune": "None",
+        "Historiser": "History",
+        "Afficher": "Display",
+        "Evénement": "Event",
+        "Inverser": "Reverse",
+        "Lifetime cache": "Lifetime cache",
+        "Unité": "Unite",
+        "Tester": "Test"
+    }
+}

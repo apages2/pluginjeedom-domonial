@@ -1,0 +1,8 @@
+==== V1.000 du 13/03/2016 21:26
+Version initiale
+
+==== V1.100 du 01/04/2017 21:26
+Gestion des onglets dans l'équipement Domonial (Equipement/Commandes)
+Ajout de la fonction dupliquer un équipement
+Suppression des bootstraps
+Ajout d'un menu Health
