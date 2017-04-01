@@ -6,3 +6,8 @@ Gestion des onglets dans l'équipement Domonial (Equipement/Commandes)
 Ajout de la fonction dupliquer un équipement
 Suppression des bootstraps
 Ajout d'un menu Health
+
+==== ToDo
+log/debug
+jeelink
+Mise a jour doc
