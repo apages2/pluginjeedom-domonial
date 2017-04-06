@@ -367,7 +367,7 @@ def option_listen(address, port=55003):
 							try: 
 								file = open(config.log_msgfile,"a+")
 								file.write("---------------------------------\n")
-								file.write(time.strftime("%Y-%m-%d %H:%M:%S")+' Received data from jeedom : => '+message+'\n')
+								file.write(time.strftime("%Y-%m-%d %H:%M:%S")+' Send data : => '+message+'\n')
 								file.close()
 							except Exception, e:
 								logger.error("Error when trying to write message log")
