@@ -112,7 +112,7 @@ mon telephone via slack.
 Depannage et diagnostic
 ===
 Le deamon refuse de démarrer
------------------------------
+----------------------------
 Essayez de le démarrer en mode debug pour voir l'erreur
 
 Lors du démarrage en mode debug j'ai une erreur avec : /tmp/domonial.pid
