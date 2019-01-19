@@ -4,7 +4,7 @@ Le plugin Domonial permet de recevoir les notifications que les centrales alarme
 envoi au travers d'une configuration de type "telesurveillance" en utilisant le GPRS de la carte SIM.
 Une simple carte SIM suffit, pas d'abonnement data necessaire.
 
-> **Important**
+> **Important** : 
 > Si votre alarme est gérée par une entreprise de télésurveillance, vous ne pourrez pas utiliser ce plugin
 
 Configuration de la centrale
@@ -24,8 +24,8 @@ le menu Transmetteur, onglet Standard.
 
 ![configuration_alarmes02](../images/domonial_alarme_standard.PNG)
 
-> **Important**
->Attention, cette partie doit deja etre configurée pour qu'en cas de déclenchement, la centrale d'alarme appel sur un N° de téléphone au 
+> **Attention** :
+>Cette partie doit deja etre configurée pour qu'en cas de déclenchement, la centrale d'alarme appel sur un N° de téléphone au 
 >travers de la ligne téléphonique ou au travers de la carte SIM. Ne modifiez donc pas les paramètres existants si vous ne savez 
 >pas à quoi ils correspondent.
 
