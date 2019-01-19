@@ -1,8 +1,0 @@
-== Domonial
-
-=== Description
-Plugin permettant de traiter les notifications envoyées en GRPS par les alarmes Domonial
-
-'''
-=== Changelog
-include::changelog.asciidoc[]
