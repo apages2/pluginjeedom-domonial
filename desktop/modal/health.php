@@ -36,7 +36,7 @@ $eqLogics = domonial::byType('domonial');
 	<tbody>
 	 <?php
 foreach ($eqLogics as $eqLogic) {
-	$img = '<img class="lazy" src="plugins/boxio/doc/images/boxio_icon.png" height="65" width="55" />';
+	$img = '<img class="lazy" src="plugins/domonial/plugin_info/domonial_icon.png" height="65" width="55" />';
 
 	$signalcmd = $eqLogic->getCmd('info', 'signal');
 	$signal = '';

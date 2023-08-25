@@ -37,7 +37,7 @@ if (!isConnect()) {
 		<div class="form-group">
 			<label class="col-lg-4 control-label">{{Pas d'acquittement de trame pour les canaux}}</label>
 			<div class="col-lg-8">
-				<textarea class="configKey form-control" data-l1key="bandomonialcanaux" rows="3"/>
+				<textarea class="configKey form-control" data-l1key="bandomonialcanaux" rows="3"></textarea>
 			</div>
 		</div>
 		<div class="form-group expertModeVisible">

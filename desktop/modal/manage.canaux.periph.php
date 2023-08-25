@@ -17,9 +17,6 @@
 if (!isConnect('admin')) {
 	throw new Exception('401 Unauthorized');
 }
-include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
-include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
-include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
 <div id='div_domonialCanauxPAlert' style="display: none;"></div>
 <a class="btn btn-success pull-right" id="bt_saveDomonialCanauxP"><i class="fa fa-check-circle"></i> Enregistrer</a><br/><br/><br/>
