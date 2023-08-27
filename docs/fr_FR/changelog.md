@@ -1,8 +1,8 @@
 ### V1.105 du 27/08/2023 16:23
-- Changement de l'icon du plugin
+-   Changement de l'icon du plugin
 
 ### V1.104 du 25/08/2023 09:30
--   Correction d'un problème sur model config et de lien HS avec l'icon
+-   Correction d'un problème sur modal config et de lien HS sur les icons
 
 ### V1.103 du 18/11/2019 21:09
 -   Mise à jour pour compatibilité jeedom V4
