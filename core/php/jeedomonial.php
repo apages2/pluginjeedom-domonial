@@ -17,22 +17,26 @@
  */
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 
-if (!jeedom::apiAccess(init('apikey'))) {
-	connection::failed();
+if (!jeedom::apiAccess(init('apikey'), 'domonial')) {
 	echo 'Clef API non valide, vous n\'êtes pas autorisé à effectuer cette action (jeedomonial)';
 	die();
 }
 
-if (isset($_GET['test'])) {
+if (init('test')!= '') {
 	echo 'OK';
 	die();
 }
 
-if (isset($_GET['trame'])) {
+$result = json_decode(file_get_contents("php://input"), true);
+
+if (!is_array($result)) {
+	die();
+}
+
+if (isset($result['trame'])) {
 
 
-	$trame = str_replace('Y', '*', $_GET['trame']);
-	$trame = str_replace('Z', '#', $trame);
+	$trame = $result['trame'];
 	log::add ('domonial','event','Receive to Jeedom : '.$trame);
 	
 	$tramedecrypt=domonial::decrypt_trame($trame);

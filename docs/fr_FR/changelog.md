@@ -1,3 +1,6 @@
+### V1.106 du 30/08/2023 18:51
+-   Modification du daemon pour le rendre fonctionnel en python3
+
 ### V1.105 du 27/08/2023 16:23
 -   Changement de l'icon du plugin
 

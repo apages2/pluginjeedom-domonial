@@ -27,14 +27,15 @@ class domonial extends eqLogic {
 	
 	public static function deamon_info() {
 		$return = array();
-		$return['log'] = 'domonialcmd';
+		$return['log'] = 'domoniald';
 		$return['state'] = 'nok';
-		$pid_file = '/tmp/domonial.pid';
+		$pid_file = jeedom::getTmpFolder('domonial') . '/domoniald.pid';
 		if (file_exists($pid_file)) {
-			if (posix_getsid(trim(file_get_contents($pid_file)))) {
+			$pid = trim(file_get_contents($pid_file));
+			if (is_numeric($pid) && posix_getsid($pid)) {
 				$return['state'] = 'ok';
 			} else {
-				shell_exec('sudo rm -rf ' . $pid_file . ' 2>&1 > /dev/null;rm -rf ' . $pid_file . ' 2>&1 > /dev/null;');
+				shell_exec(system::getCmdSudo() . 'rm -rf ' . $pid_file . ' 2>&1 > /dev/null;rm -rf ' . $pid_file . ' 2>&1 > /dev/null;');
 			}
 		}
 		$return['launchable'] = 'ok';
@@ -44,69 +45,27 @@ class domonial extends eqLogic {
 	public static function deamon_start($_debug = false) {
 		self::deamon_stop();
 		$deamon_info = self::deamon_info();
+		$domonial_path = realpath(dirname(__FILE__) . '/../../ressources/domoniald');
+		
 		if ($deamon_info['launchable'] != 'ok') {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}
-		log::remove('domonialcmd');
+		log::remove('domoniald');
 		
-
-		$domonial_path = realpath(dirname(__FILE__) . '/../../ressources/domonialcmd');
-
-		//Initialisation du fichier protocol
-		/*$protocol = file_get_contents($rfxcom_path . '/protocol_tmpl.xml');
-		if (file_exists($rfxcom_path . '/protocol.xml')) {
-			unlink($rfxcom_path . '/protocol.xml');
-		}
-		if (file_exists($rfxcom_path . '/protocol.xml')) {
-			throw new Exception(__('Impossible de supprimer le fichier :', __FILE__) . $rfxcom_path . '/protocol.xml', 'cantWriteProtcolFile');
-		}
-		$protocol_replace = array();
-		for ($i = 0; $i < 25; $i++) {
-			$protocol_replace['#state' . $i . '#'] = config::byKey('protocol::' . $i, 'rfxcom', 0);
-			if ($protocol_replace['#state' . $i . '#'] === '') {
-				$protocol_replace['#state' . $i . '#'] = 0;
-			}
-		}
-		file_put_contents($rfxcom_path . '/protocol.xml', str_replace(array_keys($protocol_replace), array_values($protocol_replace), $protocol));
-		if (!file_exists($rfxcom_path . '/protocol.xml')) {
-			throw new Exception(__('Impossible d\'écrire le fichier :', __FILE__) . $rfxcom_path . '/protocol.xml', 'cantWriteProtcolFile');
-		}
-		*/
-		if (file_exists('/tmp/config_domonial.xml')) {
-			unlink('/tmp/config_domonial.xml');
-		}
-		$enable_logging = (config::byKey('enableLogging', 'domonial', 0) == 1) ? 'yes' : 'no';
-		if (file_exists(log::getPathToLog('domonialcmd') . '.message')) {
-			unlink(log::getPathToLog('domonialcmd') . '.message');
-		}
-		if (!file_exists(log::getPathToLog('domonialcmd') . '.message')) {
-			touch(log::getPathToLog('domonialcmd') . '.message');
-		}
-		$replace_config = array(
-			'#sockethost#' => config::byKey('sockethost', 'domonial'),
-            '#socketport#' => config::byKey('socketport', 'domonial', 55003),
-            '#log_path#' => log::getPathToLog('domonialcmd'),
-            '#enable_log#' => $enable_logging,
-            '#pid_path#' => '/tmp/domonial.pid',
-		    '#trigger_url#' => network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/domonial/core/php/jeedomonial.php',
-			'#apikey#' => config::byKey('api'),
-			'#BanCanauxDomonial#' => config::byKey('bandomonialcanaux', 'domonial')
-		);
-
-		$config = template_replace($replace_config, file_get_contents($domonial_path . '/config_tmpl.xml'));
-		file_put_contents('/tmp/config_domonial.xml', $config);
-		chmod('/tmp/config_domonial.xml', 0777);
-		if (!file_exists('/tmp/config_domonial.xml')) {
-			throw new Exception(__('Impossible de créer : ', __FILE__) . '/tmp/config_domonial.xml');
-		}
-		$cmd = '/usr/bin/python ' . $domonial_path . '/domonialcmd.py -l -o /tmp/config_domonial.xml';
-		if (log::getLogLevel('boxio')=='100') {
-			$cmd .= ' -D';
-		}
-		log::add('domonialcmd', 'info', 'Lancement démon domonialcmd : ' . $cmd);
-		$result = exec($cmd . ' >> ' . log::getPathToLog('domonialcmd') . ' 2>&1 &');
+		$cmd = '/usr/bin/python3 ' . $domonial_path . '/domoniald.py';
+		$cmd .= ' --loglevel ' . log::convertLogLevel(log::getLogLevel('domonial'));
+		$cmd .= ' --sockethost ' . config::byKey('sockethost', 'domonial');
+		$cmd .= ' --socketport ' . config::byKey('socketport', 'domonial');
+		$cmd .= ' --callback ' . network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/domonial/core/php/jeedomonial.php';
+		$cmd .= ' --apikey ' . jeedom::getApiKey('domonial');
+		$cmd .= ' --pid ' . jeedom::getTmpFolder('domonial') . '/domoniald.pid';
+		$cmd .= ' --ban "' . config::byKey('bandomonialcanaux', 'domonial').'"';
+		$cmd .= ' --cycle ' . config::byKey('cycle', 'domonial');
+		
+		log::add('domoniald', 'info', 'Lancement démon domoniald : ' . $cmd);
+		$result = exec($cmd . ' >> ' . log::getPathToLog('domoniald') . ' 2>&1 &');
 		if (strpos(strtolower($result), 'error') !== false || strpos(strtolower($result), 'traceback') !== false) {
-			log::add('domonialcmd', 'error', $result);
+			log::add('domoniald', 'error', $result);
 			return false;
 		}
 
@@ -120,16 +79,17 @@ class domonial extends eqLogic {
 			$i++;
 		}
 		if ($i >= 30) {
-			log::add('domonialcmd', 'error', 'Impossible de lancer le démon domonial, vérifiez le log domonialcmd', 'unableStartDeamon');
+			log::add('domoniald', 'error', 'Impossible de lancer le démon domonial, vérifiez le log domoniald', 'unableStartDeamon');
 			return false;
 		}
-		message::removeAll('domonial', 'unableStartDeamon');
-		log::add('domonialcmd', 'info', 'Démon domonial lancé');
+		message::removeAll('domoniald', 'unableStartDeamon');
+		sleep(2);
+		log::add('domoniald', 'info', 'Démon domonial lancé');
 		return true;
 	}
 
 	public static function deamon_stop() {
-		$pid_file = '/tmp/domonial.pid';
+		$pid_file = jeedom::getTmpFolder('domonizl') . '/domoniald.pid';;
 		if (file_exists($pid_file)) {
 			$pid = intval(trim(file_get_contents($pid_file)));
 			system::kill($pid);
@@ -185,10 +145,14 @@ class domonial extends eqLogic {
 		$ret_trame["SDS"] = $params[0];
 		$ret_trame["Site"] = $site;
 		
-		if ($action == 63) {
-			$ret_trame["Action"] = "Activée";
-		} elseif ($action == 64) {
-			$ret_trame["Action"] = "Désactivée";
+		if ($action == config::byKey('canaux::TotaleA', 'domonial')) {
+			$ret_trame["Action"] = "Totale Activée";
+		} elseif ($action == config::byKey('canaux::TotaleD', 'domonial')) {
+			$ret_trame["Action"] = "Totale Désactivée";
+		} elseif ($action == config::byKey('canaux::PartielleA', 'domonial')) {
+			$ret_trame["Action"] = "Partielle Désactivée";
+		} elseif ($action == config::byKey('canaux::PartielleD', 'domonial')) {
+			$ret_trame["Action"] = "Partielle Désactivée";
 		} else {
 			$ret_trame["Action"] = $action;
 		}

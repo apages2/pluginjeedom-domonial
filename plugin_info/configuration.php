@@ -25,17 +25,9 @@ if (!isConnect()) {
 <form class="form-horizontal">
     <fieldset>
         <legend>{{Général}}</legend>
+		
 		<div class="form-group">
-			<label class="col-sm-4 control-label">{{Enregistrer tous les messages (cela peut ralentir le système)}}</label>
-			<div class="col-sm-1">
-				<input type="checkbox" class="configKey" data-l1key="enableLogging" />
-			</div>
-			<div class="col-sm-7">
-				<a class="btn btn-default" id="bt_logDomonialMessage"><i class="fa fa-file-o"></i> {{Voir les messages}}</a>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{Pas d'acquittement de trame pour les canaux}}</label>
+			<label class="col-lg-4 control-label">{{Pas d'acquittement de trame pour les codes}}</label>
 			<div class="col-lg-8">
 				<textarea class="configKey form-control" data-l1key="bandomonialcanaux" rows="3"></textarea>
 			</div>
@@ -52,53 +44,49 @@ if (!isConnect()) {
                 <input class="configKey form-control" data-l1key="socketport" value="55003"/>
             </div>
         </div>
-		<div class="form-group">
-            <label class="col-sm-4 control-label">{{Canaux Systemes}}</label>
+		 <div class="form-group expertModeVisible">
+            <label class="col-sm-4 control-label">{{Cycle}}</label>
             <div class="col-sm-2">
-                <a class="btn btn-default" id="bt_manageDomonialCanauxS" ><i class="fa fa-cogs"></i> {{Gestion des canaux Systemes Domonial}}</a>
+                <input class="configKey form-control" data-l1key="cycle" value="0.3"/>
             </div>
         </div>
 		<div class="form-group">
-            <label class="col-sm-4 control-label">{{Canaux Peripheriques}}</label>
+            <label class="col-sm-4 control-label">{{Codes Systemes}}</label>
             <div class="col-sm-2">
-                <a class="btn btn-default" id="bt_manageDomonialCanauxP" ><i class="fa fa-cogs"></i> {{Gestion des canaux Peripheriques Domonial}}
+                <a class="btn btn-default" id="bt_manageDomonialCanauxS" ><i class="fa fa-cogs"></i> {{Gestion des codes Systemes Domonial}}</a>
+            </div>
         </div>
-		
+		<div class="form-group">
+            <label class="col-sm-4 control-label">{{Codes Peripheriques}}</label>
+            <div class="col-sm-2">
+                <a class="btn btn-default" id="bt_manageDomonialCanauxP" ><i class="fa fa-cogs"></i> {{Gestion des codes Peripheriques Domonial}}</a>
+				</div>
+        </div>
     </fieldset>
 </form>
 
 
 <script>
-    $('.bt_logDomonialMessage').on('click', function () {
-     var slave_id = $(this).closest('.slaveConfig').attr('data-slave_id');
-     $('#md_modal').dialog({title: "{{Log des messages domonial}}"});
-     $('#md_modal').load('index.php?v=d&plugin=domonial&modal=show.log&slave_id='+slave_id).dialog('open');
- });
- 
-    $('#bt_logDomonialMessage').on('click', function () {
-        $('#md_modal').dialog({title: "{{Log des messages domonial}}"});
-        $('#md_modal').load('index.php?v=d&plugin=domonial&modal=show.log').dialog('open');
-    });
-	
+
 	$('.bt_manageDomonialCanauxS').on('click', function () {
        var slave_id = $(this).closest('.slaveConfig').attr('data-slave_id');
-       $('#md_modal2').dialog({title: "{{Gestion des canaux Systemes DOMONIAL}}"});
-       $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.canaux.systeme&slave_id='+slave_id).dialog('open');
+       $('#md_modal2').dialog({title: "{{Gestion des codes Systemes DOMONIAL}}"});
+       $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.code.systeme&slave_id='+slave_id).dialog('open');
    });
 
     $('#bt_manageDomonialCanauxS').on('click', function () {
-        $('#md_modal2').dialog({title: "{{Gestion des canaux Systemes DOMONIAL}}"});
-        $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.canaux.systeme').dialog('open');
+        $('#md_modal2').dialog({title: "{{Gestion des codes Systemes DOMONIAL}}"});
+        $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.code.systeme').dialog('open');
     });
 	
 	$('.bt_manageDomonialCanauxP').on('click', function () {
        var slave_id = $(this).closest('.slaveConfig').attr('data-slave_id');
-       $('#md_modal2').dialog({title: "{{Gestion des canaux Peripheriques DOMONIAL}}"});
-       $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.canaux.periph&slave_id='+slave_id).dialog('open');
+       $('#md_modal2').dialog({title: "{{Gestion des codes Peripheriques DOMONIAL}}"});
+       $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.code.periph&slave_id='+slave_id).dialog('open');
    });
 
     $('#bt_manageDomonialCanauxP').on('click', function () {
-        $('#md_modal2').dialog({title: "{{Gestion des canaux Peripheriques DOMONIAL}}"});
-        $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.canaux.periph').dialog('open');
+        $('#md_modal2').dialog({title: "{{Gestion des codes Peripheriques DOMONIAL}}"});
+        $('#md_modal2').load('index.php?v=d&plugin=domonial&modal=manage.code.periph').dialog('open');
     });
 </script>
