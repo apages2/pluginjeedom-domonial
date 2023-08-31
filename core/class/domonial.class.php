@@ -138,32 +138,49 @@ class domonial extends eqLogic {
 		);
 		
 		$find_trame = false;
-		$params = preg_split('/[#]/', $trame);
+		$trame = preg_split('/!/', $trame);
+		$crc = $trame[1];
+		$params = preg_split('/[#]/', $trame[0]);
 		$local = preg_split('/[\*]/', $params[1]);
 		$site = substr($local[0],0,8);
 		$action = substr($local[0],9,2);
+	
 		$ret_trame["SDS"] = $params[0];
 		$ret_trame["Site"] = $site;
 		
-		if ($action == config::byKey('canaux::TotaleA', 'domonial')) {
-			$ret_trame["Action"] = "Totale Activée";
-		} elseif ($action == config::byKey('canaux::TotaleD', 'domonial')) {
-			$ret_trame["Action"] = "Totale Désactivée";
-		} elseif ($action == config::byKey('canaux::PartielleA', 'domonial')) {
-			$ret_trame["Action"] = "Partielle Désactivée";
-		} elseif ($action == config::byKey('canaux::PartielleD', 'domonial')) {
-			$ret_trame["Action"] = "Partielle Désactivée";
+		$tailleparams = count($params);
+		
+		for ($i=2; $i<$tailleparams; $i++) {
+			$j=$i-1;
+			$ret_trame["Autre".$j] = trim($params[$i],"*");
+		}
+		
+		$result=domonial::checkaction($action);
+		if ($result) {
+			$ret_trame["Action"] = $result;
 		} else {
 			$ret_trame["Action"] = $action;
 		}
-		$ret_trame["Autre1"] = $local[1];
-		$ret_trame["Autre2"] = trim($params[2],"*");
-		$ret_trame["Autre3"] = trim($params[3],"*");
-		$ret_trame["Autre4"] = trim($params[4],"*");
-		$ret_trame["Autre5"] = trim($params[5],"*");
-		$ret_trame["CRC"] = trim($params[6],"*");
+		
+		$ret_trame["Info"] = $local[1];
+		$ret_trame["CRC"] = $crc;
 
 		return $ret_trame;
+	}
+	
+	public static function checkaction($action) {
+	
+		$sqld = "SELECT * FROM `config` WHERE `plugin` = 'domonial' and value='".$action."'";
+		$result =  DB::Prepare($sqld, array(), DB::FETCH_TYPE_ALL);
+		$return = preg_split('/::/', $result[0]['key']);
+		$typeaction =  substr($return[1],-1);
+		if ($typeaction=='A') {
+			$etat='Activation';
+		} else {
+			$etat='Désactivation';
+		}
+		$return = $etat.' '.substr($return[1],0,-1);
+		return $return;
 	}
 
 /*     * *********************Methode d'instance************************* */
